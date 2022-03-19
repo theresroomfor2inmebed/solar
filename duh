@@ -1,3 +1,4 @@
+		game:service'RunService'.Heartbeat:Connect(function()
 		local h=game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
 		if _G.grabtools==true and h then
 			for i,v in pairs(workspace:GetChildren()) do
