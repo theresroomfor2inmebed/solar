@@ -1,0 +1,24 @@
+		local h=game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
+		if _G.grabtools==true and h then
+			for i,v in pairs(workspace:GetChildren()) do
+				coroutine.wrap(function()
+					if v:IsA("Tool") then
+						h:EquipTool(v)
+					end	
+				end)()
+			end
+		end
+	end)
+	spawn(function()
+		while wait() do
+			if _G.grabtools==true then
+				script.Parent.TextColor3=Color3.fromRGB(53, 53, 53)
+				script.Parent.BackgroundColor3=Color3.fromRGB(138, 161, 177)
+			else
+				script.Parent.TextColor3=Color3.fromRGB(255,255,255)
+				script.Parent.BackgroundColor3=Color3.fromRGB(31, 31, 31)
+			end
+		end
+        script.Parent.MouseButton1Click:Connect(function()
+            _G.grabtools=not _G.grabtools
+        end)
