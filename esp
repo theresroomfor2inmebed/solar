@@ -167,4 +167,3 @@ end
 for i,v in pairs(game.Players:GetChildren()) do
     addskeletonesp(v)
 end
-end
