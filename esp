@@ -310,4 +310,3 @@ spawn(function()
     end
     
     Players.PlayerAdded:Connect(playeradded)
-end)
