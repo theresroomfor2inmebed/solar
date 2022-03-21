@@ -137,7 +137,7 @@ spawn(function()
             playeradded(b)
         end
     end
-    
+    wait()
     Players.PlayerAdded:Connect(playeradded)
 end)
 -- r15 esp 
