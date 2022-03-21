@@ -1,6 +1,7 @@
 local function addskeletonesp(player)
     spawn(function()
         local supported = true
+        while supported and true do wait()
         local parttbl = {"Head", "LowerTorso", "RightUpperLeg", "LeftUpperLeg", "RightLowerLeg", "LeftLowerLeg", "RightFoot", "LeftFoot", "LeftUpperArm", "RightUpperArm", "RightLowerArm", "LeftLowerArm", "LeftHand", "RightHand"}
         for i,v in pairs(parttbl) do
             if player.Character:FindFirstChild(v) == nil then
