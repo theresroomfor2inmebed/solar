@@ -2,9 +2,6 @@ local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
 
-game.Players.LocalPlayer.Character.Humanoid:SetStateEnabled("Seated", false)
-game.Players.LocalPlayer.Character.Humanoid.Sit = true
-
 local Player = Players.LocalPlayer
 local Mouse = Player:GetMouse()
 
