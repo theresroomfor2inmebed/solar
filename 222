@@ -1,9 +1,74 @@
-            _G.conn = game:GetService("RunService").Stepped:Connect(function()
-                for _, v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
-                    if v:IsA("BasePart") then
-                        v.CanCollide = false    
-                    end
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+
+local Player = Players.LocalPlayer
+local Mouse = Player:GetMouse()
+
+local AntiTool = function(Character)
+    Character.ChildAdded:Connect(function(x)
+        if x:IsA("Tool") then
+            coroutine.wrap(function()
+                local Handle = x:FindFirstChild("Handle")
+                local Touch
+                if Handle then
+                    Handle.Name = "Part"
+                    Handle.CanTouch = false
+                end
+            end)()
+            x.AncestryChanged:Connect(function(Tool, Parent)
+                if Parent == Player.Character then
+                    Tool:Destroy()
+                    coroutine.wrap(function()
+                        wait()
+                        Tool.Parent = nil
+                    end)()
                 end
             end)
         end
     end)
+end
+local AntiKill = function()
+    if Player.Character and Player.Character:FindFirstChildWhichIsA("Humanoid") and Player.Character:FindFirstChildWhichIsA("Humanoid").RootPart and workspace.CurrentCamera then
+        local Humanoid = Player.Character:FindFirstChildWhichIsA("Humanoid")
+        local RootPart = Humanoid.RootPart
+        if UserInputService.MouseBehavior == Enum.MouseBehavior.LockCenter and not RootPart:FindFirstChildWhichIsA("BodyMover") then
+            local X, Y, Z = workspace.CurrentCamera.CFrame:ToEulerAnglesYXZ()
+            RootPart.CFrame = CFrame.new(RootPart.Position) * CFrame.Angles(0, Y, 0)
+        end
+        Humanoid.Sit = true
+        Humanoid:SetStateEnabled("Seated", false)
+    end
+end
+local AntiVoid = function(Character)
+    Character.ChildAdded:Connect(function(Tool)
+        if Character and Character:FindFirstChildWhichIsA("Humanoid") and Character:FindFirstChildWhichIsA("Humanoid").RootPart and Tool:IsA("Tool") then
+            workspace["FallenPartsDestroyHeight"] = 0/0
+            local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+            local RootPart = Humanoid.RootPart
+            local CurrentPosition = RootPart.CFrame
+            Humanoid:SetStateEnabled(Enum.HumanoidStateType.Freefall, false)
+            repeat RunService.Heartbeat:wait() until Tool.Parent == Character
+            RootPart.CFrame = CurrentPosition
+            RootPart.Velocity = Vector3.new()
+            Humanoid:SetStateEnabled(Enum.HumanoidStateType.Freefall, true)
+        end
+    end)
+end
+
+for _,x in next, Players:GetPlayers() do
+    if x ~= Player and x.Character then
+        AntiTool(x.Character)
+        x.CharacterAdded:Connect(AntiTool)
+    end
+end
+Players.PlayerAdded:Connect(function(P)
+    if P ~= Player then
+        P.CharacterAdded:Connect(AntiTool)
+    end
+end)
+
+RunService.RenderStepped:Connect(AntiKill)
+
+AntiVoid(Player.Character)
+Player.CharacterAdded:Connect(AntiVoid)
