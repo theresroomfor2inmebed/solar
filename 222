@@ -1,0 +1,9 @@
+            _G.conn = game:GetService("RunService").Stepped:Connect(function()
+                for _, v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+                    if v:IsA("BasePart") then
+                        v.CanCollide = false    
+                    end
+                end
+            end)
+        end
+    end)
